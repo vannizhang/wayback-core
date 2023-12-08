@@ -31,3 +31,13 @@ export type WaybackMetadata = {
     accuracy: number;
     releaseDate?: string;
 };
+
+export type Point = {
+    longitude: number;
+    latitude: number;
+    x: number;
+    y: number;
+    spatialReference: {
+        wkid: number;
+    };
+};
