@@ -9,11 +9,15 @@ import { WaybackConfig, WaybackItem } from '../types';
 let waybackconfig: WaybackConfig = null;
 
 /**
- * an array containing data related to all World Imagery Wayback releases.
+ * An array containing data related to all World Imagery Wayback releases.
  * This array is sorted in descending order based on the release date.
  */
 let waybackItems: WaybackItem[] = null;
 
+/**
+ * A Map that will be used to efficiently
+ * retrieve wayback items by their release numbers.
+ */
 let waybackItemByReleaseNumber: Map<number, WaybackItem> = null;
 
 /**
@@ -89,6 +93,15 @@ export const getWaybackItems = async (): Promise<WaybackItem[]> => {
     return waybackItems;
 };
 
+/**
+ * Retrieves a specific World Imagery Wayback item based on the provided release number.
+ * It utilizes a Map named waybackItemByReleaseNumber to efficiently
+ * retrieve wayback items by their release numbers.
+ *
+ * @param releaseNumber The release number of the wayback item to retrieve
+ * @returns A Promise that resolves with the wayback item corresponding to the provided release number.
+ *          If the wayback item for the given release number is not found, it returns undefined.
+ */
 export const getWaybackItemByReleaseNumber = async (releaseNumber) => {
     if (!waybackItemByReleaseNumber) {
         const waybackItems = await getWaybackItems();
