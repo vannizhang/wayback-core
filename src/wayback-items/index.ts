@@ -58,7 +58,9 @@ export const getWaybackItems = async (): Promise<WaybackItem[]> => {
         return waybackItems;
     }
 
-    waybackItems = Object.keys(waybackconfig).map((key: string) => {
+    const waybackConfig = await getWaybackConfigData();
+
+    waybackItems = Object.keys(waybackConfig).map((key: string) => {
         const releaseNum: number = +key;
 
         const waybackconfigItem = waybackconfig[releaseNum];
