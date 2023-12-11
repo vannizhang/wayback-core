@@ -104,7 +104,7 @@ export const getWaybackItems = async (): Promise<WaybackItem[]> => {
  * @returns A Promise that resolves with the wayback item corresponding to the provided release number.
  *          If the wayback item for the given release number is not found, it returns undefined.
  */
-export const getWaybackItemByReleaseNumber = async (releaseNumber) => {
+export const getWaybackItemByReleaseNumber = async (releaseNumber: number) => {
     if (!waybackItemByReleaseNumber) {
         const waybackItems = await getWaybackItems();
 

@@ -312,8 +312,8 @@ const getSampledImagedDataUri = async (
                 let dataUri = ''; //base64.substr(512, 5000);
                 // console.log(tileImageDataUri);
 
-                for (const point of samplePoints) {
-                    dataUri += base64.slice(point, 500);
+                for (const start of samplePoints) {
+                    dataUri += base64.slice(start, start + 500);
                 }
 
                 resolve({
