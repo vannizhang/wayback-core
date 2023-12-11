@@ -176,7 +176,7 @@ const getReleaseNumOfWaybackItemsWithLocalChanges = async ({
     row: number;
     level: number;
 }): Promise<number[]> => {
-    const waybackItems = getWaybackItems();
+    const waybackItems = await getWaybackItems();
 
     return new Promise((resolve, reject) => {
         const results: Array<number> = [];
