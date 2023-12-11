@@ -1,6 +1,6 @@
 import { getWaybackServiceBaseURL } from '../config';
 import { lat2tile, long2tile } from '../helpers/geometry';
-import { Point, WaybackItem } from '../types';
+import { WaybackItem } from '../types';
 import {
     getWaybackItemByReleaseNumber,
     getWaybackItems,
@@ -48,13 +48,16 @@ let wabackItemsIndicemMap: Map<number, number> = null;
  * It fetches wayback configuration data, find the release of wayback items with local changes, and determines unique release associated
  * with image tiles linked to local changes.
  *
- * @param point The geographic coordinates (latitude and longitude) of the location of interest
+ * @param point The geographic coordinates (longitude and latitude) of the location of interest, (e.g., `{longitude: -100.05, latitude: 35.10}`)
  * @param zoom The zoom level used to determine the level of detail for the geographic point
  * @returns {Promise<WaybackItem[]>} A Promise that resolves with an array of unique releases of wayback items
  *          associated with local changes for the given geographic point and zoom level.
  */
 export const getWaybackItemsWithLocalChanges = async (
-    point: Point,
+    point: {
+        latitude: number;
+        longitude: number;
+    },
     zoom: number
 ): Promise<WaybackItem[]> => {
     const { longitude, latitude } = point;

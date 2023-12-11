@@ -1,4 +1,4 @@
-import { Point, WaybackMetadata } from '../types';
+import { WaybackMetadata } from '../types';
 import { getWaybackItemByReleaseNumber } from '../wayback-items';
 import { METADATA_FIELD_NAMES } from './config';
 
@@ -26,7 +26,7 @@ const { SOURCE_DATE, SOURCE_PROVIDER, SOURCE_NAME, RESOLUTION, ACCURACY } =
  * at the specified location and zoom level.
  *
  * @param params An object containing parameters for the metadata query:
- * @param point The geometry representing the location to be used in the query.
+ * @param point  The geographic coordinates (longitude and latitude) representing the location to be used in the query. (e.g., `{longitude: -100.05, latitude: 35.10}`)
  * @param zoom The zoom level for the imagery.
  * @param releaseNumber The world imagery wayback release number.
  *
@@ -39,9 +39,12 @@ export const getMetadata = async ({
     releaseNumber,
 }: {
     /**
-     * point geometry to be used in the query
+     * The geographic coordinates (longitude and latitude) of the location of interest, (e.g., `{longitude: -100.05, latitude: 35.10}`)
      */
-    point: Point;
+    point: {
+        latitude: number;
+        longitude: number;
+    };
     /**
      * zoom level
      */
@@ -51,6 +54,14 @@ export const getMetadata = async ({
      */
     releaseNumber: number;
 }): Promise<WaybackMetadata> => {
+    if (!point || !zoom || !releaseNumber) {
+        throw new Error(
+            'Failed to query metadata because the required parameters are missing'
+        );
+    }
+
+    const { longitude, latitude } = point;
+
     const queryParams = new URLSearchParams({
         f: 'json',
         where: '1=1',
@@ -61,7 +72,11 @@ export const getMetadata = async ({
             RESOLUTION,
             ACCURACY,
         ].join(','),
-        geometry: JSON.stringify(point),
+        geometry: JSON.stringify({
+            spatialReference: { wkid: 4326 },
+            x: longitude,
+            y: latitude,
+        }),
         returnGeometry: 'false',
         geometryType: 'esriGeometryPoint',
         spatialRel: 'esriSpatialRelIntersects',
@@ -122,6 +137,12 @@ export const getMetadata = async ({
  */
 const getQueryUrl = async (releaseNum: number, zoom: number) => {
     const waybackItem = await getWaybackItemByReleaseNumber(releaseNum);
+
+    if (!waybackItem) {
+        throw new Error(
+            `failed to find wayback item that with release number of ${releaseNum}`
+        );
+    }
 
     const { metadataLayerUrl } = waybackItem;
 
