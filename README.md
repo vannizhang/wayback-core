@@ -179,13 +179,13 @@ import { WaybackMetadata } from '@vannizhang/wayback-core';
 | accuracy   | number | Number of meters objects are within   |
 
 ## Issues 
-Find a bug or want to request a new feature? Please let us know by submitting an issue.
+Find a bug? Please let us know by submitting an issue.
 
 ## Licensing
 
 ### The Imagery
 
-The imagery presented in the Wayback app is subject to the terms and conditions set forth in the Esri Master Agreement or Terms of Use.  See [World Imagery](https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9) for additional details on the imagery content and applicable Terms of Use.
+The imagery presented in the Wayback Archieve is subject to the terms and conditions set forth in the Esri Master Agreement or Terms of Use.  See [World Imagery](https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9) for additional details on the imagery content and applicable Terms of Use.
 
 ### The Software
 
