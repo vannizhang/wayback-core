@@ -110,7 +110,7 @@ Query the wayback metadata feature service associated with the given wayback rel
 **Returns**:
 | Type          | Description                                                                                                                                                                        |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Promise<[`WaybackMetadata`](#waybackmetadata)[]> | When resolved, returns the [`WaybackMetadata`](#waybackmetadata) |
+| Promise<[`WaybackMetadata`](#waybackmetadata)> | When resolved, returns the [`WaybackMetadata`](#waybackmetadata) |
 
 **Example**:
 ```js
@@ -142,10 +142,12 @@ Here is an example of the response returned by `getMetadata()`:
 ### `WaybackItem`
 Object that represents a specific release/version of the World Imagery Wayback archive.
 
+**Usage**:
 ```js
 import { WaybackItem } from '@vannizhang/wayback-core';
 ```
 
+**Properties**:
 | Name                | Type   | Description                                                                                                                                                                     |                  |
 |---------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
 | itemID              | string | Id of the ArcGIS Online Item (WMTS Layer) for this World Imagery Wayback release (e.g., `903f0abe9c3b452dafe1ca5b8dd858b9`)                                                    |                  |
@@ -162,10 +164,12 @@ import { WaybackItem } from '@vannizhang/wayback-core';
 ### `WaybackMetadata`
 This object represents the metadata of a Wayback tile image.
 
+**Usage**:
 ```js
 import { WaybackMetadata } from '@vannizhang/wayback-core';
 ```
 
+**Properties**:
 | Name       | Type   | Description                           |
 |------------|--------|---------------------------------------|
 | date       | number | Acquisition date of the image         |
