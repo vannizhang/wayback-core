@@ -46,7 +46,7 @@ export const getWaybackConfigData = async (): Promise<WaybackConfig> => {
 };
 
 /**
- * Get an array of data for all World Imagery Wayback releases.
+ * Get an array of data for all World Imagery Wayback releases/versions.
  *
  * This function retrieves an array of Wayback items from the Wayback Configuration data,
  * sorting them by release date in descending order (newset release is the first item) and caching the result for subsequent calls.
