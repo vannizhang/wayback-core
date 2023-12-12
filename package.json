@@ -8,7 +8,7 @@
     "dist/**/*"
   ],
   "scripts": {
-    "test": "jest --config jest.config.js --bail --findRelatedTests --passWithNoTests",
+    "test": "jest ./src --config jest.config.js --bail --findRelatedTests --passWithNoTests",
     "clean": "rimraf dist",
     "build": "npm run clean && tsc",
     "lint": "eslint src --ext .tsx,.ts --cache --fix",
