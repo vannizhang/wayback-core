@@ -5,7 +5,7 @@ The `wayback-core` package offers core functionalities to retrieve all versions 
 You can install this package via `npm`. Use the following command:
 
 ```sh
-npm install @vannizhang/wayback-core
+npm i @vannizhang/wayback-core
 ```
 
 ## API Documentation
