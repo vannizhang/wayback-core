@@ -1,6 +1,6 @@
 {
   "name": "@vannizhang/wayback-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,10 +13,10 @@
     "build": "npm run clean && tsc",
     "lint": "eslint src --ext .tsx,.ts --cache --fix",
     "prepare": "husky install && npm run build",
-    "prepublishOnly" : "npm run test && npm run lint",
-    "preversion" : "npm run lint",
-    "version" : "npm run lint && git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepublishOnly": "npm run test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run lint && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,json}": [
