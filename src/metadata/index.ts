@@ -25,7 +25,6 @@ const { SOURCE_DATE, SOURCE_PROVIDER, SOURCE_NAME, RESOLUTION, ACCURACY } =
  * to retrieve information (acquisition date, provider, resolution, etc.) of the world imagery wayback tile
  * at the specified location and zoom level.
  *
- * @param params An object containing parameters for the metadata query:
  * @param point  The geographic coordinates (longitude and latitude) representing the location to be used in the query. (e.g., `{longitude: -100.05, latitude: 35.10}`)
  * @param zoom The zoom level for the imagery.
  * @param releaseNumber The world imagery wayback release number.
@@ -33,27 +32,14 @@ const { SOURCE_DATE, SOURCE_PROVIDER, SOURCE_NAME, RESOLUTION, ACCURACY } =
  * @returns A Promise that resolves to `WaybackMetadata`, containing metadata information like date, provider,
  * source, resolution, and accuracy for the specified location and zoom level.
  */
-export const getMetadata = async ({
-    point,
-    zoom,
-    releaseNumber,
-}: {
-    /**
-     * The geographic coordinates (longitude and latitude) of the location of interest, (e.g., `{longitude: -100.05, latitude: 35.10}`)
-     */
+export const getMetadata = async (
     point: {
         latitude: number;
         longitude: number;
-    };
-    /**
-     * zoom level
-     */
-    zoom: number;
-    /**
-     * world imagery wayback release number
-     */
-    releaseNumber: number;
-}): Promise<WaybackMetadata> => {
+    },
+    zoom: number,
+    releaseNumber: number
+): Promise<WaybackMetadata> => {
     if (!point || !zoom || !releaseNumber) {
         throw new Error(
             'Failed to query metadata because the required parameters are missing'

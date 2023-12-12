@@ -11,7 +11,7 @@ npm install @vannizhang/wayback-core
 ## API Documentation
 
 ### `getWaybackItems`
-Return a list of [`WaybackItem`](./src/types/index.ts) for all World Imagery Wayback releases/versions from the Wayback Configuration data. The list is sorted by release date in descending order (newest release is the first item).
+Return a list of [`WaybackItem`](./src/types/index.ts) for all World Imagery Wayback releases/versions from the Wayback archive. The output list is sorted by release date in descending order (newest release is the first item).
 
 **Parameters**:
 
@@ -20,7 +20,7 @@ None
 **Returns**:
 | Type          | Description                                                                                                                                                                        |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Promise<[`WaybackItem`](./src/types/index.ts)[]> | When resolved, returns a list of [`WaybackItem`](./src/types/index.ts) for all World Imagery Wayback releases/versions sorted by release date in descending order.|
+| Promise<[`WaybackItem`](./src/types/index.ts)[]> | When resolved, returns a list of [`WaybackItem`](./src/types/index.ts) sorted by release date in descending order.|
 
 **Example**:
 ```js
@@ -104,26 +104,26 @@ Query the wayback metadata feature service associated with the given wayback rel
 | Parameter     | Type                                       | Description                                                                                                                      |
 |---------------|--------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | Point         | `{ latitude: number; longitude: number; }` | The geographic coordinates (longitude and latitude) of the location of interest, (e.g., `{longitude: -100.05, latitude: 35.10}`) |
-| Zoom          | number                                     | The zoom level used to determine the level of detail for the geographic point                                                    |
-| releaseNumber | number                                     | The world imagery wayback release number.                                                                                        |
+| Zoom          | number                                     | The zoom level                                                    |
+| releaseNumber | number                                     | The release number of a given wayback release/version. (You can find the release number from the [`WaybackItem`](./src/types/index.ts))                                                                                        |
 
 **Returns**:
 | Type          | Description                                                                                                                                                                        |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Promise<[`WaybackMetadata`](./src/types/index.ts)[]> | When resolved, returns the [`WaybackMetadata`](./src/types/index.ts) with local changes.|
+| Promise<[`WaybackMetadata`](./src/types/index.ts)[]> | When resolved, returns the [`WaybackMetadata`](./src/types/index.ts) |
 
 **Example**:
 ```js
 import { getMetadata } from '@vannizhang/wayback-core';
 
-const metadata = await getMetadata({
-    point: {
+const metadata = await getMetadata(
+    {
         longitude: 117.1825,
         latitude: 34.0556,
     },
-    zoom: 15,
-    releaseNumber: 56102,
-});
+    15,
+    56102,
+);
 ```
 
 Here is an example of the response returned by `getMetadata()`:
