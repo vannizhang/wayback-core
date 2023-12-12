@@ -137,6 +137,43 @@ Here is an example of the response returned by `getMetadata()`:
 }
 ```
 
+## Type Definitions
+
+### `WaybackItem`
+Object that represents a specific release/version of the World Imagery Wayback archive.
+
+```js
+import { WaybackItem } from '@vannizhang/wayback-core';
+```
+
+| Name                | Type   | Description                                                                                                                                                                     |                  |
+|---------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
+| itemID              | string | Id of the ArcGIS Online Item (WMTS Layer) for this World Imagery Wayback release (e.g., 903f0abe9c3b452dafe1ca5b8dd858b9)                                                    |                  |
+| itemTitle           | string | Title of this World Imagery Wayback release (e.g., World Imagery (Wayback 2014-02-20))                                                                                  |                  |
+| itemURL             | string | URL template of the WMTS Layer for this Wayback release (e.g., https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{level}/{row}/{col}) |                  |
+| metadataLayerItemID | string | Id of the ArcGIS Online Item (Feature Layer) for the metadata of this World Imagery Wayback release (e.g., 73b47bbc112b498daf85d40fb972738a)                             |                  |
+| metadataLayerUrl    | string | URL of the metadata Feature Layer (e.g., https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2014_r01/MapServer)                              |                  |
+| layerIdentifier     | string | A unique identifier of this World Imagery Wayback Release (e.g., WB_2014_R01)                                                                                          |                  |
+| releaseNum          | number | Number of this Wayback release, which is being used as the time parameter in the itemURL: `/MapServer/tile/{releaseNum}/{level}/{row}/{col}`.                                                                        |                  |
+| releaseDateLabel    | string | Formatted release date for this Wayback item (e.g.                                                                                                                             | ""2014-02-20"") |
+| releaseDatetime     | number | Release date for this Wayback item as a Unix epoch timestamp (e.g., 1392883200000)                                                                                        |                  |
+
+
+### `WaybackMetadata`
+This object represents the metadata of a Wayback tile image.
+
+```js
+import { WaybackMetadata } from '@vannizhang/wayback-core';
+```
+
+| Name       | Type   | Description                           |
+|------------|--------|---------------------------------------|
+| date       | number | Acquisition date of the image         |
+| provider   | string | Provider of the image                 |
+| source     | string | Source of the image                   |
+| resolution | number | Ground distance that pixels represent |
+| accuracy   | number | Number of meters objects are within   |
+
 ## Issues 
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
 

@@ -22,7 +22,7 @@ const { SOURCE_DATE, SOURCE_PROVIDER, SOURCE_NAME, RESOLUTION, ACCURACY } =
 
 /**
  * Query the wayback metadata feature service associated with the given wayback release
- * to retrieve information (acquisition date, provider, resolution, etc.) of the world imagery wayback tile
+ * to retrieve information (acquisition date, provider, resolution, etc.) of the world imagery wayback tile image
  * at the specified location and zoom level.
  *
  * @param point  The geographic coordinates (longitude and latitude) representing the location to be used in the query. (e.g., `{longitude: -100.05, latitude: 35.10}`)

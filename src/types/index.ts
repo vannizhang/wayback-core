@@ -90,6 +90,9 @@ export type WaybackItem = {
     releaseDatetime: number;
 };
 
+/**
+ * This object represents the metadata of a Wayback tile image.
+ */
 export type WaybackMetadata = {
     /**
      * Acquisition date of the image
@@ -111,7 +114,6 @@ export type WaybackMetadata = {
      * Indicates number of meters that the objects displayed in this image are within
      */
     accuracy: number;
-    releaseDate?: string;
 };
 
 export type Point = {
