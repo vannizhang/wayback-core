@@ -155,8 +155,8 @@ import { WaybackItem } from '@vannizhang/wayback-core';
 | metadataLayerUrl    | string | URL of the metadata Feature Layer (e.g., https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2014_r01/MapServer)                              |                  |
 | layerIdentifier     | string | A unique identifier of this World Imagery Wayback Release (e.g., WB_2014_R01)                                                                                          |                  |
 | releaseNum          | number | Number of this Wayback release, which is being used as the time parameter in the itemURL: `/MapServer/tile/{releaseNum}/{level}/{row}/{col}`.                                                                        |                  |
-| releaseDateLabel    | string | Formatted release date for this Wayback item (e.g.                                                                                                                             | ""2014-02-20"") |
-| releaseDatetime     | number | Release date for this Wayback item as a Unix epoch timestamp (e.g., 1392883200000)                                                                                        |                  |
+| releaseDateLabel    | string | Formatted release date for this Wayback item (e.g.                                        "2014-02-20") |
+| releaseDatetime     | number | Release date for this Wayback item as a Unix epoch timestamp (e.g., `1392883200000`)                                                                                        |                  |
 
 
 ### `WaybackMetadata`
