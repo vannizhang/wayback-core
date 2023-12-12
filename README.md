@@ -1,5 +1,5 @@
 # wayback-core
-The `wayback-core` package offers core functionalities to retrieve all versions of the [World Imagery Wayback archieve](https://www.arcgis.com/home/group.html?id=0f3189e1d1414edfad860b697b7d8311#overview), or find versions that contain local changes.
+This package offers core functionalities to retrieve all versions of the World Imagery Wayback archieve, or find versions that contain local changes.
 
 ## Installation 
 You can install this package via `npm`. Use the following command:
