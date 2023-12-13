@@ -1,5 +1,6 @@
 import { getWaybackServiceBaseURL } from '../config';
 import { lat2tile, long2tile } from '../helpers/geometry';
+import { areUint8ArraysEqual } from '../helpers/unit8array';
 import { WaybackItem } from '../types';
 import {
     getWaybackItemByReleaseNumber,
@@ -17,9 +18,9 @@ type Candidate = {
     url: string;
 };
 
-type IResponseGetImageBlob = {
+type IResponseGetImageData = {
     releaseNumber: number;
-    dataUri: string;
+    data: Uint8Array;
 };
 
 type IResponseWaybackTilemap = {
@@ -91,7 +92,7 @@ export const getWaybackItemsWithLocalChanges = async (
     }
     // console.log(candidates)
 
-    // Removes duplicate image data URLs and extracts unique release numbers
+    // Removes release with duplicate tile image data and extracts unique release numbers
     const rNumsNoDuplicates = await removeDuplicates(candidates);
     // console.log(rNumsNoDuplicates)
 
@@ -246,7 +247,7 @@ const getReleaseNumOfWaybackItemsWithLocalChanges = async ({
 /**
  * Asynchronous function removeDuplicates is responsible for processing an array of Candidate objects
  * to extract unique release numbers associated with image data URLs. It eliminates duplicate image data
- * URLs and returns an array of unique release numbers.
+ * and returns an array of unique release numbers.
  *
  * @param candidates (Optional) An array of Candidate objects containing URL and releaseNumber information
  * @returns A Promise that resolves with an array of unique release numbers extracted from the provided Candidates
@@ -259,39 +260,43 @@ const removeDuplicates = async (
         return [];
     }
 
-    const finalResults: Array<number> = [];
-
     // reverse the candidates list so the wayback items will be sorted by release dates in ascending order (oldest >>> latest)
-    const imageDataUriRequests = candidates.reverse().map((candidate) => {
-        return getSampledImagedDataUri(candidate.url, candidate.releaseNumber);
+    const imageDataRequests = candidates.reverse().map((candidate) => {
+        return getImageData(candidate.url, candidate.releaseNumber);
     });
 
+    // array of uniqeu image data with duplicated items removed
+    const uniqueImageData: IResponseGetImageData[] = [];
+
     try {
-        const imageDataUriResults = await Promise.all(imageDataUriRequests);
+        const imageDataResults = await Promise.all(imageDataRequests);
 
-        let dataUri4PrevRelease = '';
+        for (const currentItem of imageDataResults) {
+            const previousItem = uniqueImageData[uniqueImageData.length - 1];
 
-        for (const { dataUri, releaseNumber } of imageDataUriResults) {
-            if (dataUri === dataUri4PrevRelease) {
+            // image data of the currentItem is identical to the image data of the previous item,
+            // skip pushing current data to the uniqueImageData list
+            if (
+                previousItem &&
+                areUint8ArraysEqual(previousItem.data, currentItem.data)
+            ) {
                 continue;
             }
 
-            finalResults.push(releaseNumber);
-            dataUri4PrevRelease = dataUri;
+            uniqueImageData.push(currentItem);
         }
     } catch (err) {
         console.error('failed to fetch all image data uri', err);
     }
 
-    return finalResults;
+    // return release number of the items in the uniqueImageData array
+    return uniqueImageData.map((d) => d.releaseNumber);
 };
 
-const getSampledImagedDataUri = async (
+const getImageData = async (
     imageUrl: string,
     releaseNumber: number
-): Promise<IResponseGetImageBlob> => {
-    const samplePoints = [512, 1000, 2500, 5000, 7500, 10000, 12500, 15000];
-
+): Promise<IResponseGetImageData> => {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', imageUrl, true);
@@ -299,29 +304,14 @@ const getSampledImagedDataUri = async (
 
         xhr.onload = function () {
             if (this.status == 200) {
-                const uInt8Array = new Uint8Array(this.response);
-                let i = uInt8Array.length;
-                const binaryString = new Array(i);
-                while (i--) {
-                    binaryString[i] = String.fromCharCode(uInt8Array[i]);
-                }
-                const data = binaryString.join('');
-                const base64 = window.btoa(data);
-                // console.log(base64.length)
-
-                let dataUri = ''; //base64.substr(512, 5000);
-                // console.log(tileImageDataUri);
-
-                for (const start of samplePoints) {
-                    dataUri += base64.slice(start, start + 500);
-                }
+                const data = new Uint8Array(this.response);
 
                 resolve({
                     releaseNumber,
-                    dataUri,
+                    data,
                 });
             } else {
-                reject(null);
+                reject();
             }
         };
 
