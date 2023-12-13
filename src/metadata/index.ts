@@ -138,9 +138,16 @@ const getQueryUrl = async (releaseNum: number, zoom: number) => {
 };
 
 const getLayerId = (zoom: number) => {
-    zoom = zoom + 1;
+    // the metadata service has 14 sub layers (0-13) that provide metadata for imagery tiles from zoom level 23 (layer 0) up to zoom level 10 (layer 13)
     const layerID = MAX_ZOOM - zoom;
-    // the service has 14 sub layers that provide metadata up to zoom level 10 (layer ID 14), if the zoom level is small that (e.g. 5), there are no metadata
+
+    // id of the metadata layer for the imagery tiles at zoom level 10,
+    // in other words, the imagery tile that is with the biggest resolution (e.g., 150m resolution)
     const layerIdForMinZoom = MAX_ZOOM - MIN_ZOOM;
-    return layerID <= layerIdForMinZoom ? layerID : layerIdForMinZoom;
+
+    if (layerID > layerIdForMinZoom) {
+        return layerIdForMinZoom;
+    }
+
+    return layerID;
 };
