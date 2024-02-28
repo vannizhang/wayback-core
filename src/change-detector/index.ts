@@ -51,6 +51,7 @@ let wabackItemsIndicemMap: Map<number, number> = null;
  *
  * @param point The geographic coordinates (longitude and latitude) of the location of interest, (e.g., `{longitude: -100.05, latitude: 35.10}`)
  * @param zoom The zoom level used to determine the level of detail for the geographic point
+ * @abortController AbortController that will be used in case user needs to cancel the pending task
  * @returns {Promise<WaybackItem[]>} A Promise that resolves with an array of unique releases of wayback items
  *          associated with local changes for the given geographic point and zoom level.
  */
@@ -59,7 +60,8 @@ export const getWaybackItemsWithLocalChanges = async (
         latitude: number;
         longitude: number;
     },
-    zoom: number
+    zoom: number,
+    abortController?: AbortController
 ): Promise<WaybackItem[]> => {
     const { longitude, latitude } = point;
 
@@ -103,7 +105,16 @@ export const getWaybackItemsWithLocalChanges = async (
         output.push(waybackItem);
     }
 
-    return output;
+    return new Promise((resolve, reject) => {
+        if (abortController && abortController?.signal.aborted) {
+            reject(
+                'Task aborterd: getWaybackItemsWithLocalChanges has been aborterd by the user.'
+            );
+            return;
+        }
+
+        resolve(output);
+    });
 };
 
 const getTileImageUrl = (
