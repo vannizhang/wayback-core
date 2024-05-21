@@ -12,7 +12,7 @@ const WAYBACK_SERVICE_BASE_DEV =
 
 const WAYBACK_CONFIG_FILE_PROD =
     'https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json';
-const AYBACK_CONFIG_FILE_DEV =
+const WAYBACK_CONFIG_FILE_DEV =
     'https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/dev/waybackconfig.json';
 
 /**
@@ -34,6 +34,6 @@ export const getWaybackServiceBaseURL = () => {
 
 export const getWaybackConfigFileURL = () => {
     return shouldUseDevServices
-        ? AYBACK_CONFIG_FILE_DEV
+        ? WAYBACK_CONFIG_FILE_DEV
         : WAYBACK_CONFIG_FILE_PROD;
 };
