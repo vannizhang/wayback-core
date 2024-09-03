@@ -1,4 +1,4 @@
-import { getWaybackServiceBaseURL } from '../config';
+import { getTileImageURL, getWaybackServiceBaseURL } from '../config';
 import { lat2tile, long2tile } from '../helpers/geometry';
 import { areUint8ArraysEqual } from '../helpers/unit8array';
 import { WaybackItem } from '../types';
@@ -83,7 +83,8 @@ export const getWaybackItemsWithLocalChanges = async (
 
         const candidate: Candidate = {
             releaseNumber,
-            url: getTileImageUrl(itemURL, {
+            url: getTileImageURL({
+                urlTemplate: itemURL,
                 column,
                 row,
                 level,
@@ -117,23 +118,23 @@ export const getWaybackItemsWithLocalChanges = async (
     });
 };
 
-const getTileImageUrl = (
-    urlTemplate: string,
-    {
-        column = null,
-        row = null,
-        level = null,
-    }: {
-        column: number;
-        row: number;
-        level: number;
-    }
-): string => {
-    return urlTemplate
-        .replace('{level}', level.toString())
-        .replace('{row}', row.toString())
-        .replace('{col}', column.toString());
-};
+// const getTileImageUrl = (
+//     urlTemplate: string,
+//     {
+//         column = null,
+//         row = null,
+//         level = null,
+//     }: {
+//         column: number;
+//         row: number;
+//         level: number;
+//     }
+// ): string => {
+//     return urlTemplate
+//         .replace('{level}', level.toString())
+//         .replace('{row}', row.toString())
+//         .replace('{col}', column.toString());
+// };
 
 /**
  * Determine the release number of the wayback item that precedes a given input release number
