@@ -12,5 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Changed
+- update `getWaybackServiceBaseURL` to return URLs with different sub domains.
 
 ### Removed
