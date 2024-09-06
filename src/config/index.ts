@@ -117,3 +117,15 @@ export const getWaybackConfigFileURL = () => {
         ? WAYBACK_CONFIG_FILE_DEV
         : WAYBACK_CONFIG_FILE_PROD;
 };
+
+/**
+ * Get an array of subDomain names where tiles are served to speed up tile retrieval.
+ * @returns {string[]} array of subDomain names (e.g. `[ 'wayback-a', 'wayback-b' ]`)
+ *
+ * @see https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-WebTileLayer.html#subDomains
+ */
+export const getWaybackSubDomains = () => {
+    return shouldUseDevServices
+        ? WAYBACK_SERVICE_SUB_DOMAINS_DEV
+        : WAYBACK_SERVICE_SUB_DOMAINS_PROD;
+};

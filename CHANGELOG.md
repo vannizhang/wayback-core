@@ -8,11 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- add `getWaybackSubDomains` to return an array of subDomain names where tiles are served to speed up tile retrieval.
 
 ### Fixed
 
 ### Changed
 - update `getWaybackServiceBaseURL` to return URLs with different sub domains.
-- update `getTileImageURL` to return URLs with different sub domains. 
+- update `getTileImageURL` to return URLs with different sub domains.
 
 ### Removed
