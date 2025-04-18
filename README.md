@@ -137,6 +137,27 @@ Here is an example of the response returned by `getMetadata()`:
 }
 ```
 
+### `getWaybackServiceBaseURL`
+Returns the base URL for the Wayback service, with a randomly selected subdomain.
+
+**Parameters**:
+
+None
+
+**Returns**:
+| Type   | Description                                                                 |
+|--------|-----------------------------------------------------------------------------|
+| string | The base URL for the Wayback service with a randomly selected subdomain.   |
+
+**Example**:
+```js
+import { getWaybackServiceBaseURL } from '@vannizhang/wayback-core';
+
+const baseURL = getWaybackServiceBaseURL();
+console.log(baseURL);
+// Example output: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer"
+```
+
 ## Type Definitions
 
 ### `WaybackItem`

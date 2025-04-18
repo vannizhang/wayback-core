@@ -75,6 +75,12 @@ const getRandomSubDomain = () => {
     return subDomain;
 };
 
+/**
+ * Generates the base URL for the Wayback service, replacing the subdomain placeholder
+ * with a randomly selected subdomain from the available options.
+ *
+ * @returns {string} The base URL for the Wayback service with a random subdomain.
+ */
 export const getWaybackServiceBaseURL = () => {
     const subDomain = getRandomSubDomain();
     return WAYBACK_SERVICE_URL_TEMPLATE.replace('{subDomain}', subDomain);
