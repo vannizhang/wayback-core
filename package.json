@@ -1,7 +1,7 @@
 {
-  "name": "@vannizhang/wayback-core",
+  "name": "@esri/wayback-core",
   "version": "1.0.9",
-  "description": "",
+  "description": "This package offers core functionalities to retrieve all versions of the World Imagery Wayback archieve, or find versions that contain local changes.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -34,12 +34,12 @@
     "ESRI"
   ],
   "bugs": {
-    "url": "https://github.com/vannizhang/wayback-core/issues"
+    "url": "https://github.com/Esri/wayback-core/issues"
   },
-  "homepage": "https://github.com/vannizhang/wayback-core",
+  "homepage": "https://github.com/Esri/wayback-core",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vannizhang/wayback-core.git"
+    "url": "git+https://github.com/Esri/wayback-core.git"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
