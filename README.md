@@ -202,6 +202,10 @@ import { WaybackMetadata } from '@vannizhang/wayback-core';
 ## Issues 
 Find a bug? Please let us know by submitting an issue.
 
+## Contributing
+
+Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
+
 ## Licensing
 
 ### The Imagery
