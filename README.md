@@ -5,7 +5,7 @@ This package offers core functionalities to retrieve all versions of the World I
 You can install this package via `npm`. Use the following command:
 
 ```sh
-npm i @vannizhang/wayback-core
+npm i @esri/wayback-core
 ```
 
 ## API Documentation
@@ -26,7 +26,7 @@ None
 ```js
 import {
     getWaybackItems,
-} from '@vannizhang/wayback-core';
+} from '@esri/wayback-core';
 
 const waybackItems = await getWaybackItems();
 ```
@@ -68,7 +68,7 @@ Return a list of [`WaybackItem`](#waybackitem) with local changes for a specifie
 ```js
 import { 
     getWaybackItemsWithLocalChanges 
-} from '@vannizhang/wayback-core';
+} from '@esri/wayback-core';
 
 const waybackItems = await getWaybackItemsWithLocalChanges(
     {
@@ -114,7 +114,7 @@ Query the wayback metadata feature service associated with the given wayback rel
 
 **Example**:
 ```js
-import { getMetadata } from '@vannizhang/wayback-core';
+import { getMetadata } from '@esri/wayback-core';
 
 const metadata = await getMetadata(
     {
@@ -151,7 +151,7 @@ None
 
 **Example**:
 ```js
-import { getWaybackServiceBaseURL } from '@vannizhang/wayback-core';
+import { getWaybackServiceBaseURL } from '@esri/wayback-core';
 
 const baseURL = getWaybackServiceBaseURL();
 console.log(baseURL);
@@ -165,7 +165,7 @@ Object that represents a specific release/version of the World Imagery Wayback a
 
 **Usage**:
 ```js
-import { WaybackItem } from '@vannizhang/wayback-core';
+import { WaybackItem } from '@esri/wayback-core';
 ```
 
 **Properties**:
@@ -187,7 +187,7 @@ This object represents the metadata of a Wayback tile image.
 
 **Usage**:
 ```js
-import { WaybackMetadata } from '@vannizhang/wayback-core';
+import { WaybackMetadata } from '@esri/wayback-core';
 ```
 
 **Properties**:
