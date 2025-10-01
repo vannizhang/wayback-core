@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-type SetDefaultOptionsParams = {
-    /**
-     * if true, use dev wayback services
-     */
-    useDevServices?: boolean;
-};
+// type SetDefaultOptionsParams = {
+//     /**
+//      * if true, use dev wayback services
+//      */
+//     useDevServices?: boolean;
+// };
 
 type GetTileImageURLParams = {
     /**
@@ -43,45 +43,64 @@ export const WAYBACK_SERVICE_SUB_DOMAINS_PROD = [
 ];
 
 /**
- * An array of subDomain names for development wayback service.
- */
-export const WAYBACK_SERVICE_SUB_DOMAINS_DEV = ['waybackdev'];
-
-/**
  * The template of the wayback service root URL.
  */
 export const WAYBACK_SERVICE_URL_TEMPLATE =
     'https://{subDomain}.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer';
+
+const WAYBACK_CONFIG_FILE_PROD =
+    'https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json';
+
+// const WAYBACK_CONFIG_FILE_DEV =
+//     'https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/dev/waybackconfig.json';
 
 // const WAYBACK_SERVICE_BASE_PROD =
 //     'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer';
 // const WAYBACK_SERVICE_BASE_DEV =
 //     'https://waybackdev.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer';
 
-const WAYBACK_CONFIG_FILE_PROD =
-    'https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json';
-const WAYBACK_CONFIG_FILE_DEV =
-    'https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/dev/waybackconfig.json';
+// /**
+//  * An array of subDomain names for development wayback service.
+//  */
+// export const WAYBACK_SERVICE_SUB_DOMAINS_DEV = ['waybackdev'];
 
 /**
- * if true, use dev wayback services
+ * An array of subDomain names for development wayback service.
+ * Using different subDomains helps to speed up tile retrieval.
  */
-let shouldUseDevServices = false;
+let customSubDomains: string[] | null = null;
 
 /**
- *
- * @param defaultOptions
+ * The URL of the wayback configuration file to use instead of the default one.
+ * This can be useful for testing with a custom configuration file.
  */
-export const setDefaultWaybackOptions = (
-    defaultOptions: SetDefaultOptionsParams
-) => {
-    shouldUseDevServices = defaultOptions.useDevServices || false;
+let customWaybackConfigFileURL: string | null = null;
+
+/**
+ * Set custom wayback configuration parameters.
+ * This can be useful for testing with custom subDomains or a custom configuration file URL.
+ * @param param.subDomains - An array of custom subDomain names to use instead of the default production subDomains.
+ * @param param.waybackConfigFileURL - A custom URL for the wayback configuration file to use instead of the default one.
+ * @returns {void}
+ */
+export const setCustomWaybackConfig = (params: {
+    subDomains?: string[];
+    waybackConfigFileURL?: string;
+}) => {
+    customSubDomains = params.subDomains || null;
+    customWaybackConfigFileURL = params.waybackConfigFileURL || null;
 };
 
+/**
+ * Get a random subDomain name from the list of available subDomains.
+ * If custom subDomains are set, use them; otherwise, use the production subDomains.
+ * @returns {string} a random subDomain name (e.g. 'wayback-a')
+ */
 const getRandomSubDomain = () => {
-    const subDomains = shouldUseDevServices
-        ? WAYBACK_SERVICE_SUB_DOMAINS_DEV
-        : WAYBACK_SERVICE_SUB_DOMAINS_PROD;
+    const subDomains =
+        customSubDomains && customSubDomains.length > 0
+            ? customSubDomains
+            : WAYBACK_SERVICE_SUB_DOMAINS_PROD;
 
     const randomIdx = Math.floor(Math.random() * subDomains.length);
 
@@ -119,23 +138,34 @@ export const getTileImageURL = ({
     row = null,
     level = null,
 }: GetTileImageURLParams): string => {
-    const subDomain = getRandomSubDomain();
-
     const url = urlTemplate
         .replace('{level}', level.toString())
         .replace('{row}', row.toString())
         .replace('{col}', column.toString());
 
-    const subDomainToBeReplaced = shouldUseDevServices
-        ? 'waybackdev'
-        : 'wayback';
+    const shouldReplaceSubDomain = url.startsWith(
+        'https://wayback.maptiles.arcgis.com'
+    );
+
+    if (!shouldReplaceSubDomain) {
+        return url;
+    }
+
+    const subDomainToBeReplaced = 'wayback';
+
+    const subDomain = getRandomSubDomain();
 
     return url.replace(subDomainToBeReplaced, subDomain);
 };
 
+/**
+ * Get the URL of the wayback configuration file.
+ * If a custom URL is set, use it; otherwise, use the default production URL.
+ * @returns {string} the URL of the wayback configuration file
+ */
 export const getWaybackConfigFileURL = () => {
-    return shouldUseDevServices
-        ? WAYBACK_CONFIG_FILE_DEV
+    return customWaybackConfigFileURL
+        ? customWaybackConfigFileURL
         : WAYBACK_CONFIG_FILE_PROD;
 };
 
@@ -146,7 +176,7 @@ export const getWaybackConfigFileURL = () => {
  * @see https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-WebTileLayer.html#subDomains
  */
 export const getWaybackSubDomains = () => {
-    return shouldUseDevServices
-        ? WAYBACK_SERVICE_SUB_DOMAINS_DEV
+    return customSubDomains && customSubDomains.length > 0
+        ? customSubDomains
         : WAYBACK_SERVICE_SUB_DOMAINS_PROD;
 };

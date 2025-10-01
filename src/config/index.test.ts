@@ -15,13 +15,13 @@
 
 import {
     getWaybackServiceBaseURL,
-    setDefaultWaybackOptions,
+    setCustomWaybackConfig,
     getTileImageURL,
 } from './';
 
 import {
     WAYBACK_SERVICE_URL_TEMPLATE,
-    WAYBACK_SERVICE_SUB_DOMAINS_DEV,
+    // WAYBACK_SERVICE_SUB_DOMAINS_DEV,
     WAYBACK_SERVICE_SUB_DOMAINS_PROD,
 } from './';
 
@@ -54,13 +54,19 @@ describe('test getWaybackServiceBaseURL', () => {
 
     test('should return a URL from development subdomains', () => {
         // Mock shouldUseDevServices to return true
-        setDefaultWaybackOptions({
-            useDevServices: true,
+        // setDefaultWaybackOptions({
+        //     useDevServices: true,
+        // });
+
+        const customSubDomains = ['waybackdev'];
+
+        setCustomWaybackConfig({
+            subDomains: customSubDomains,
         });
 
         const result = getWaybackServiceBaseURL();
 
-        const expectedUrls = WAYBACK_SERVICE_SUB_DOMAINS_DEV.map((subDomain) =>
+        const expectedUrls = customSubDomains.map((subDomain) =>
             WAYBACK_SERVICE_URL_TEMPLATE.replace('{subDomain}', subDomain)
         );
 
@@ -70,6 +76,10 @@ describe('test getWaybackServiceBaseURL', () => {
 
 describe('test getTileImageURL', () => {
     test('should return a URL from production subdomains with correct column, row and level', () => {
+        setCustomWaybackConfig({
+            subDomains: [],
+        });
+
         const result = getTileImageURL({
             urlTemplate:
                 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{level}/{row}/{col}',
@@ -87,10 +97,10 @@ describe('test getTileImageURL', () => {
         expect(expectedUrls).toContain(result);
     });
 
-    test('should return a URL from development subdomains with correct column, row and level', () => {
+    test('should not replace subdomain if the URL template is custom even if subDomains are set', () => {
         // Mock shouldUseDevServices to return true
-        setDefaultWaybackOptions({
-            useDevServices: true,
+        setCustomWaybackConfig({
+            subDomains: ['waybackdev-1', 'waybackdev-2', 'waybackdev-3'],
         });
 
         const result = getTileImageURL({
@@ -103,10 +113,10 @@ describe('test getTileImageURL', () => {
 
         const RESULT_TEMPLATE = `https://waybackdev.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/0/0/0`;
 
-        const expectedUrls = WAYBACK_SERVICE_SUB_DOMAINS_DEV.map((subDomain) =>
-            RESULT_TEMPLATE.replace('waybackdev', subDomain)
-        );
+        // const expectedUrls = WAYBACK_SERVICE_SUB_DOMAINS_DEV.map((subDomain) =>
+        //     RESULT_TEMPLATE.replace('waybackdev', subDomain)
+        // );
 
-        expect(expectedUrls).toContain(result);
+        expect(result).toBe(RESULT_TEMPLATE);
     });
 });

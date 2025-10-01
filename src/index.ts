@@ -18,9 +18,10 @@ import { getMetadata } from './metadata';
 import { getWaybackItems } from './wayback-items';
 import { WaybackItem, WaybackMetadata, WaybackConfig } from './types';
 import {
-    setDefaultWaybackOptions,
+    // setDefaultWaybackOptions,
     getWaybackSubDomains,
     getWaybackServiceBaseURL,
+    setCustomWaybackConfig,
 } from './config';
 
 import { long2tile, lat2tile, tile2Long, tile2lat } from './helpers/geometry';
@@ -29,7 +30,7 @@ export {
     getWaybackItemsWithLocalChanges,
     getWaybackItems,
     getMetadata,
-    setDefaultWaybackOptions,
+    setCustomWaybackConfig,
     getWaybackSubDomains,
     getWaybackServiceBaseURL,
     long2tile,
