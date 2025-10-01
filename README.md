@@ -1,11 +1,25 @@
 # wayback-core
-This package offers core functionalities to retrieve all versions of the World Imagery Wayback archieve, or find versions that contain local changes.
+This package offers core functionalities to retrieve all versions of the World Imagery Wayback archive, or find versions that contain local changes. It is the underlying library used by the [Esri World Imagery Wayback App](https://github.com/Esri/wayback).
 
-## Installation 
-You can install this package via `npm`. Use the following command:
+## Table of Contents
+- [Installation](#installation)
+- [API Documentation](#api-documentation)
+  - [`getWaybackItems`](#getwaybackitems)
+  - [`getWaybackItemsWithLocalChanges`](#getwaybackitemswithlocalchanges)
+  - [`getMetadata`](#getmetadata)
+  - [`getWaybackServiceBaseURL`](#getwaybackservicebaseurl)
+- [Type Definitions](#type-definitions)
+  - [`WaybackItem`](#waybackitem)
+  - [`WaybackMetadata`](#waybackmetadata)
+- [Issues](#issues)
+- [Contributing](#contributing)
+- [Licensing](#licensing)
+
+## Installation
+Install the package using `npm` with the command below:
 
 ```sh
-npm i @esri/wayback-core
+npm install @esri/wayback-core
 ```
 
 ## API Documentation
@@ -13,14 +27,13 @@ npm i @esri/wayback-core
 ### `getWaybackItems`
 Return a list of [`WaybackItem`](#waybackitem) for all World Imagery Wayback releases/versions from the Wayback archive. The output list is sorted by release date in descending order (newest release is the first item).
 
-**Parameters**:
-
-None
+**Parameters**:  
+_None_
 
 **Returns**:
 | Type          | Description                                                                                                                                                                        |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Promise<[`WaybackItem`](#waybackitem)[]> | When resolved, returns a list of [`WaybackItem`](#waybackitem) sorted by release date in descending order.|
+| Promise<[WaybackItem](#waybackitem)[]> | When resolved, returns a list of [`WaybackItem`](#waybackitem) sorted by release date in descending order.|
 
 **Example**:
 ```js
@@ -141,8 +154,7 @@ Here is an example of the response returned by `getMetadata()`:
 Returns the base URL for the Wayback service, with a randomly selected subdomain.
 
 **Parameters**:
-
-None
+_None_
 
 **Returns**:
 | Type   | Description                                                                 |
@@ -169,17 +181,17 @@ import { WaybackItem } from '@esri/wayback-core';
 ```
 
 **Properties**:
-| Name                | Type   | Description                                                                                                                                                                     |                  |
-|---------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
-| itemID              | string | Id of the ArcGIS Online Item (WMTS Layer) for this World Imagery Wayback release (e.g., `903f0abe9c3b452dafe1ca5b8dd858b9`)                                                    |                  |
-| itemTitle           | string | Title of this World Imagery Wayback release (e.g., `World Imagery (Wayback 2014-02-20)`)                                                                                  |                  |
-| itemURL             | string | URL template of the WMTS Layer for this Wayback release (e.g., `https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{level}/{row}/{col}`) |                  |
-| metadataLayerItemID | string | Id of the ArcGIS Online Item (Feature Layer) for the metadata of this World Imagery Wayback release (e.g., `73b47bbc112b498daf85d40fb972738a`)                             |                  |
-| metadataLayerUrl    | string | URL of the metadata Feature Layer (e.g., `https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2014_r01/MapServer`)                              |                  |
-| layerIdentifier     | string | A unique identifier of this World Imagery Wayback Release (e.g., `WB_2014_R01`)                                                                                          |                  |
-| releaseNum          | number | Number of this Wayback release, which is being used as the time parameter in the itemURL: `/MapServer/tile/{releaseNum}/{level}/{row}/{col}`.                                                                        |                  |
-| releaseDateLabel    | string | Formatted release date for this Wayback item (e.g.                                        `"2014-02-20"`) |
-| releaseDatetime     | number | Release date for this Wayback item as a Unix epoch timestamp (e.g., `1392883200000`)                                                                                        |                  |
+| Name                | Type   | Description                                                                                                                                                                     |
+|---------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| itemID              | string | Id of the ArcGIS Online Item (WMTS Layer) for this World Imagery Wayback release (e.g., `903f0abe9c3b452dafe1ca5b8dd858b9`)                                                    |
+| itemTitle           | string | Title of this World Imagery Wayback release (e.g., `World Imagery (Wayback 2014-02-20)`)                                                                                       |
+| itemURL             | string | URL template of the WMTS Layer for this Wayback release (e.g., `https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{level}/{row}/{col}`) |
+| metadataLayerItemID | string | Id of the ArcGIS Online Item (Feature Layer) for the metadata of this World Imagery Wayback release (e.g., `73b47bbc112b498daf85d40fb972738a`)                                 |
+| metadataLayerUrl    | string | URL of the metadata Feature Layer (e.g., `https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2014_r01/MapServer`)                                |
+| layerIdentifier     | string | A unique identifier of this World Imagery Wayback Release (e.g., `WB_2014_R01`)                                                                                                |
+| releaseNum          | number | Number of this Wayback release, which is being used as the time parameter in the itemURL: `/MapServer/tile/{releaseNum}/{level}/{row}/{col}`.                                  |
+| releaseDateLabel    | string | Formatted release date for this Wayback item (e.g., `"2014-02-20"`)                                                                                                            |
+| releaseDatetime     | number | Release date for this Wayback item as a Unix epoch timestamp (e.g., `1392883200000`)                                                                                           |
 
 
 ### `WaybackMetadata`
@@ -199,8 +211,8 @@ import { WaybackMetadata } from '@esri/wayback-core';
 | resolution | number | Ground distance that pixels represent |
 | accuracy   | number | Number of meters objects are within   |
 
-## Issues 
-Find a bug? Please let us know by submitting an issue.
+## Issues
+Find a bug or want to request a new feature? Please let us know by submitting an issue.
 
 ## Contributing
 
@@ -210,7 +222,7 @@ Esri welcomes contributions from anyone and everyone. Please see our [guidelines
 
 ### The Imagery
 
-The imagery presented in the Wayback Archieve is subject to the terms and conditions set forth in the Esri Master Agreement or Terms of Use.  See [World Imagery](https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9) for additional details on the imagery content and applicable Terms of Use.
+The imagery presented in the Wayback Archive is subject to the terms and conditions set forth in the Esri Master Agreement or Terms of Use. See [World Imagery](https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9) for additional details on the imagery content and applicable Terms of Use.
 
 ### The Software
 
