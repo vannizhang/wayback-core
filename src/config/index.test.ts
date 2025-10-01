@@ -17,6 +17,8 @@ import {
     getWaybackServiceBaseURL,
     setCustomWaybackConfig,
     getTileImageURL,
+    getWaybackConfigFileURL,
+    getWaybackSubDomains,
 } from './';
 
 import {
@@ -118,5 +120,59 @@ describe('test getTileImageURL', () => {
         // );
 
         expect(result).toBe(RESULT_TEMPLATE);
+    });
+});
+describe('test getWaybackConfigFileURL', () => {
+    afterEach(() => {
+        setCustomWaybackConfig({
+            subDomains: [],
+            waybackConfigFileURL: undefined,
+        });
+    });
+
+    test('should return the default config file URL when no custom URL is set', () => {
+        setCustomWaybackConfig({ waybackConfigFileURL: undefined });
+        expect(getWaybackConfigFileURL()).toBe(
+            'https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json'
+        );
+    });
+
+    test('should return the custom config file URL when set', () => {
+        const customURL = 'https://example.com/custom-wayback-config.json';
+        setCustomWaybackConfig({ waybackConfigFileURL: customURL });
+        expect(getWaybackConfigFileURL()).toBe(customURL);
+    });
+});
+
+describe('test getWaybackSubDomains', () => {
+    afterEach(() => {
+        setCustomWaybackConfig({
+            subDomains: [],
+            waybackConfigFileURL: undefined,
+        });
+    });
+
+    test('should return production subdomains by default', () => {
+        setCustomWaybackConfig({ subDomains: undefined });
+        expect(getWaybackSubDomains()).toEqual([
+            'wayback',
+            'wayback-a',
+            'wayback-b',
+        ]);
+    });
+
+    test('should return custom subdomains when set', () => {
+        const customSubDomains = ['custom-1', 'custom-2'];
+        setCustomWaybackConfig({ subDomains: customSubDomains });
+        expect(getWaybackSubDomains()).toEqual(customSubDomains);
+    });
+
+    test('should return production subdomains when custom subdomains is empty array', () => {
+        setCustomWaybackConfig({ subDomains: [] });
+        expect(getWaybackSubDomains()).toEqual([
+            'wayback',
+            'wayback-a',
+            'wayback-b',
+        ]);
     });
 });

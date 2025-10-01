@@ -18,7 +18,6 @@ import { getMetadata } from './metadata';
 import { getWaybackItems } from './wayback-items';
 import { WaybackItem, WaybackMetadata, WaybackConfig } from './types';
 import {
-    // setDefaultWaybackOptions,
     getWaybackSubDomains,
     getWaybackServiceBaseURL,
     setCustomWaybackConfig,
