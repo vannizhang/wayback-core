@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import { WaybackConfig } from '../types';
+
 // type SetDefaultOptionsParams = {
 //     /**
 //      * if true, use dev wayback services
@@ -77,18 +79,26 @@ let customSubDomains: string[] | null = null;
 let customWaybackConfigFileURL: string | null = null;
 
 /**
+ * The wayback configuration data to use instead of fetching it from the configuration file URL.
+ */
+export let customWaybackConfigData: WaybackConfig | null = null;
+
+/**
  * Set custom wayback configuration parameters.
  * This can be useful for testing with custom subDomains or a custom configuration file URL.
- * @param param.subDomains - An array of custom subDomain names to use instead of the default production subDomains.
- * @param param.waybackConfigFileURL - A custom URL for the wayback configuration file to use instead of the default one.
+ * @param param.subDomains - An array of custom subDomain names to use instead of the default production subDomains: `['wayback', 'wayback-a', 'wayback-b']`
+ * @param param.waybackConfigFileURL - A custom URL for the wayback configuration file to use instead of the default one for production: `https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json`
+ * @param param.waybackConfigData - Custom wayback configuration data to use instead of fetching it from the configuration file URL.
  * @returns {void}
  */
 export const setCustomWaybackConfig = (params: {
     subDomains?: string[];
     waybackConfigFileURL?: string;
+    waybackConfigData?: WaybackConfig;
 }) => {
     customSubDomains = params.subDomains || null;
     customWaybackConfigFileURL = params.waybackConfigFileURL || null;
+    customWaybackConfigData = params.waybackConfigData || null;
 };
 
 /**

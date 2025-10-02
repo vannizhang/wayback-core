@@ -50,8 +50,8 @@ Here is an example of the response returned by `getWaybackItems()`:
     {
         "itemID":"f5f90c7419f24ceda396088f4e39ae83",
         "itemTitle":"World Imagery (Wayback 2023-12-07)",
-        "itemURL":"https://waybackdev.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/56102/{level}/{row}/{col}",
-        "metadataLayerUrl":"https://metadatadev.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2023_r11/MapServer",
+        "itemURL":"https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/56102/{level}/{row}/{col}",
+        "metadataLayerUrl":"https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2023_r11/MapServer",
         "metadataLayerItemID":"be19e857134046638a10dc2886a5398b",
         "layerIdentifier":"WB_2023_R11",
         "releaseNum":56102,

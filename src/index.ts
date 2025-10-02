@@ -15,7 +15,7 @@
 
 import { getWaybackItemsWithLocalChanges } from './change-detector';
 import { getMetadata } from './metadata';
-import { getWaybackItems } from './wayback-items';
+import { getWaybackItems } from './wayback-items/waybackItems';
 import { WaybackItem, WaybackMetadata, WaybackConfig } from './types';
 import {
     getWaybackSubDomains,
