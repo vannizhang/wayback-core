@@ -9,19 +9,6 @@ jest.mock('../config', () => ({
     getWaybackConfigFileURL: jest.fn(() => 'mock-url'),
     customWaybackConfigData: null,
 }));
-jest.mock('../helpers/waybackItem', () => ({
-    extractDateFromWaybackItemTitle: jest.fn((title: string) => {
-        // Simulate extracting date from title
-        const match = title.match(/\((Wayback )?(\d{4})-(\d{2})-(\d{2})\)/);
-        if (!match) return {};
-        const [_, __, year, month, day] = match;
-        const releaseDatetime = new Date(`${year}-${month}-${day}`).getTime();
-        return {
-            releaseDateLabel: `${month}/${day}/${year}`,
-            releaseDatetime,
-        };
-    }),
-}));
 
 const mockWaybackConfig = {
     '58924': {
@@ -117,13 +104,13 @@ describe('getWaybackItems', () => {
         expect(items[3].releaseNum).toBe(23383);
 
         // Should have releaseDateLabel and releaseDatetime
-        expect(items[0]).toHaveProperty('releaseDateLabel', '09/25/2025');
+        expect(items[0]).toHaveProperty('releaseDateLabel', '2025-09-25');
         expect(typeof items[0].releaseDatetime).toBe('number');
 
-        expect(items[1]).toHaveProperty('releaseDateLabel', '10/12/2022');
+        expect(items[1]).toHaveProperty('releaseDateLabel', '2022-10-12');
         expect(typeof items[1].releaseDatetime).toBe('number');
 
-        expect(items[2]).toHaveProperty('releaseDateLabel', '11/07/2018');
+        expect(items[2]).toHaveProperty('releaseDateLabel', '2018-11-07');
         expect(typeof items[2].releaseDatetime).toBe('number');
     });
 });

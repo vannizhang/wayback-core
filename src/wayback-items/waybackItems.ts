@@ -14,7 +14,7 @@
  */
 
 import { customWaybackConfigData, getWaybackConfigFileURL } from '../config';
-import { extractDateFromWaybackItemTitle } from '../helpers/waybackItem';
+import { extractDateFromWaybackItemTitle } from './helpers';
 import { WaybackConfig, WaybackItem } from '../types';
 
 /**
@@ -101,31 +101,39 @@ export const getWaybackItems = async (): Promise<WaybackItem[]> => {
 
     const waybackConfig = await getWaybackConfigData();
 
-    waybackItems = Object.keys(waybackConfig).map((key: string) => {
-        const releaseNum: number = +key;
+    waybackItems = Object.keys(waybackConfig)
+        .filter((key) => !isNaN(+key)) // Filter out non-numeric keys
+        .map((key: string) => {
+            const releaseNum: number = +key;
 
-        const waybackconfigItem = waybackconfig[releaseNum];
+            const waybackconfigItem = waybackconfig[releaseNum];
 
-        // If the release number does not exist in the configuration or the item is invalid, skip it
-        if (!isValidWaybackItem(waybackconfigItem)) {
-            return null;
-        }
+            // If the release number does not exist in the configuration or the item is invalid, skip it
+            if (!isValidWaybackItem(waybackconfigItem)) {
+                return null;
+            }
 
-        const { itemTitle } = waybackconfigItem || {};
+            const { itemTitle } = waybackconfigItem || {};
 
-        // Extract release date details from the Wayback item title using a helper function
-        const { releaseDateLabel, releaseDatetime } =
-            extractDateFromWaybackItemTitle(itemTitle) || {};
+            // Extract release date details from the Wayback item title using a helper function
+            const { releaseDateLabel, releaseDatetime } =
+                extractDateFromWaybackItemTitle(itemTitle) || {};
 
-        const waybackItem: WaybackItem = {
-            releaseNum,
-            releaseDateLabel,
-            releaseDatetime,
-            ...waybackconfigItem,
-        };
+            // If no valid release date is found, skip this item
+            // since release date is essential for sorting and display
+            if (!releaseDateLabel || releaseDatetime === 0) {
+                return null;
+            }
 
-        return waybackItem;
-    });
+            const waybackItem: WaybackItem = {
+                releaseNum,
+                releaseDateLabel,
+                releaseDatetime,
+                ...waybackconfigItem,
+            };
+
+            return waybackItem;
+        });
 
     // Remove null entries and sort the Wayback items by releaseDatetime (descending order)
     waybackItems = waybackItems
