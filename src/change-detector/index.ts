@@ -20,7 +20,7 @@ import { WaybackItem } from '../types';
 import {
     getWaybackItemByReleaseNumber,
     getWaybackItems,
-} from '../wayback-items';
+} from '../wayback-items/waybackItems';
 
 type Candidate = {
     /**

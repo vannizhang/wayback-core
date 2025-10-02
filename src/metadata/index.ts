@@ -14,7 +14,7 @@
  */
 
 import { WaybackMetadata } from '../types';
-import { getWaybackItemByReleaseNumber } from '../wayback-items';
+import { getWaybackItemByReleaseNumber } from '../wayback-items/waybackItems';
 import { METADATA_FIELD_NAMES } from './config';
 
 type MetadataFeature = {
