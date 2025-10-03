@@ -8,6 +8,7 @@ This package offers core functionalities to retrieve all versions of the World I
   - [`getWaybackItemsWithLocalChanges`](#getwaybackitemswithlocalchanges)
   - [`getMetadata`](#getmetadata)
   - [`getWaybackServiceBaseURL`](#getwaybackservicebaseurl)
+  - [`setCustomWaybackConfig`](#setcustomwaybackconfig)
 - [Type Definitions](#type-definitions)
   - [`WaybackItem`](#waybackitem)
   - [`WaybackMetadata`](#waybackmetadata)
@@ -168,6 +169,46 @@ import { getWaybackServiceBaseURL } from '@esri/wayback-core';
 const baseURL = getWaybackServiceBaseURL();
 console.log(baseURL);
 // Example output: "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer"
+```
+
+### `setCustomWaybackConfig`
+Configure custom wayback settings for testing or development purposes. This allows you to override the default Wayback configuration with custom subdomains, configuration file URLs, or configuration data.
+
+**Parameters**:
+| Parameter              | Type           | Description                                                                                                                                                                    |
+|------------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| params.subDomains      | string[]       | (Optional) An array of custom subdomain names to use instead of the default production subdomains: `['wayback', 'wayback-a', 'wayback-b']`                                    |
+| params.waybackConfigFileURL | string    | (Optional) A custom URL for the wayback configuration file to use instead of the default production URL: `https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json` |
+| params.waybackConfigData | WaybackConfig | (Optional) Custom wayback configuration data to use directly, bypassing the need to fetch it from a configuration file URL                                                     |
+
+**Returns**:
+| Type | Description |
+|------|-------------|
+| void | This function does not return a value |
+
+**Example**:
+```js
+import { setCustomWaybackConfig } from '@esri/wayback-core';
+
+// Example 1: Set custom subdomains and configuration file URL
+setCustomWaybackConfig({
+    subDomains: ['custom-wayback-1', 'custom-wayback-2'],
+    waybackConfigFileURL: 'https://example.com/custom-wayback-config.json'
+});
+
+// Example 2: Set custom configuration data directly
+setCustomWaybackConfig({
+    waybackConfigData: {
+        '12345': {
+            itemID: 'custom-item-id',
+            itemTitle: 'World Imagery (Wayback 2024-01-15)',
+            itemURL: 'https://custom.url/tile/12345/{level}/{row}/{col}',
+            metadataLayerUrl: 'https://custom.metadata.url/MapServer',
+            metadataLayerItemID: 'custom-metadata-id',
+            layerIdentifier: 'WB_2024_R01',
+        }
+    }
+});
 ```
 
 ## Type Definitions
