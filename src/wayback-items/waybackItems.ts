@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import { getWaybackConfigFileURL } from '../config';
-import { extractDateFromWaybackItemTitle } from '../helpers/waybackItem';
+import { customWaybackConfigData, getWaybackConfigFileURL } from '../config';
+import { extractDateFromWaybackItemTitle } from './helpers';
 import { WaybackConfig, WaybackItem } from '../types';
 
 /**
@@ -41,8 +41,14 @@ let waybackItemByReleaseNumber: Map<number, WaybackItem> = null;
  * @returns {Promise<WaybackConfig>} A Promise resolving to the Wayback Configuration data.
  */
 export const getWaybackConfigData = async (): Promise<WaybackConfig> => {
-    // // Check if waybackconfig data is already available; return cached data if present
+    // If wayback configuration data is already fetched and cached, return it directly
     if (waybackconfig) {
+        return waybackconfig;
+    }
+
+    // If custom wayback config data is set, use it directly
+    if (customWaybackConfigData) {
+        waybackconfig = customWaybackConfigData;
         return waybackconfig;
     }
 
@@ -61,6 +67,26 @@ export const getWaybackConfigData = async (): Promise<WaybackConfig> => {
 };
 
 /**
+ * Validates a WaybackItem object to ensure it has required properties.
+ * @param item The WaybackItem to validate.
+ * @returns True if valid, false otherwise.
+ */
+export const isValidWaybackItem = (item: any): item is WaybackItem => {
+    if (!item || typeof item !== 'object') {
+        return false;
+    }
+
+    return (
+        typeof item.itemTitle === 'string' &&
+        typeof item.itemID === 'string' &&
+        typeof item.itemURL === 'string' &&
+        typeof item.metadataLayerUrl === 'string' &&
+        typeof item.metadataLayerItemID === 'string' &&
+        typeof item.layerIdentifier === 'string'
+    );
+};
+
+/**
  * Get an array of data for all World Imagery Wayback releases/versions.
  *
  * This function retrieves an array of Wayback items from the Wayback Configuration data,
@@ -75,30 +101,39 @@ export const getWaybackItems = async (): Promise<WaybackItem[]> => {
 
     const waybackConfig = await getWaybackConfigData();
 
-    waybackItems = Object.keys(waybackConfig).map((key: string) => {
-        const releaseNum: number = +key;
+    waybackItems = Object.keys(waybackConfig)
+        .filter((key) => !isNaN(+key)) // Filter out non-numeric keys
+        .map((key: string) => {
+            const releaseNum: number = +key;
 
-        const waybackconfigItem = waybackconfig[releaseNum];
+            const waybackconfigItem = waybackconfig[releaseNum];
 
-        if (!waybackconfig[releaseNum]) {
-            return null;
-        }
+            // If the release number does not exist in the configuration or the item is invalid, skip it
+            if (!isValidWaybackItem(waybackconfigItem)) {
+                return null;
+            }
 
-        const { itemTitle } = waybackconfigItem;
+            const { itemTitle } = waybackconfigItem || {};
 
-        // Extract release date details from the Wayback item title using a helper function
-        const { releaseDateLabel, releaseDatetime } =
-            extractDateFromWaybackItemTitle(itemTitle) || {};
+            // Extract release date details from the Wayback item title using a helper function
+            const { releaseDateLabel, releaseDatetime } =
+                extractDateFromWaybackItemTitle(itemTitle) || {};
 
-        const waybackItem: WaybackItem = {
-            releaseNum,
-            releaseDateLabel,
-            releaseDatetime,
-            ...waybackconfigItem,
-        };
+            // If no valid release date is found, skip this item
+            // since release date is essential for sorting and display
+            if (!releaseDateLabel || releaseDatetime === 0) {
+                return null;
+            }
 
-        return waybackItem;
-    });
+            const waybackItem: WaybackItem = {
+                releaseNum,
+                releaseDateLabel,
+                releaseDatetime,
+                ...waybackconfigItem,
+            };
+
+            return waybackItem;
+        });
 
     // Remove null entries and sort the Wayback items by releaseDatetime (descending order)
     waybackItems = waybackItems
